@@ -1,0 +1,72 @@
+ /*Полоска слайдера*/
+ #slider {
+    width: 300px;
+    height: 20px;
+    position: relative;
+
+    border: 2px solid grey;
+    border-radius: 25px;
+    margin: 25px auto;
+    
+    background-color: #ddd;
+}
+
+/*Тумблер слайдера*/
+#thumb {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+
+    top: 0;
+    
+    border-radius: 50%;
+    color: white;
+    background-color: #333333bb;
+    
+    font-size: 10px;
+    line-height: 20px;
+    text-align: center;
+    user-select: none;
+}
+
+/*Контейнер со штрихами слайдера*/
+#ticks {
+    position: relative;
+    left: 9px;
+    height: 10px;
+}
+
+/*Общие характеристики штриха слайдера*/
+.tick {
+    position: absolute;
+    height: 6px;
+    width: 1px;
+    top: 23px;
+    background-color: black;
+}
+
+/*Значение штриха слайдера*/
+.value{
+    position: absolute;
+    top: 7px;
+    left: -7px;
+    font-size: 15px;
+    user-select: none;
+}
+
+/*Сдвиг отметки цифр штрихов 0 и 100*/
+#tick0 .value {left: -3px;}
+#tick10 .value {left: -11px;}
+
+/*Позиция штрихов*/
+#tick0{left: 0; }
+#tick1{left: 28px;}
+#tick2{left: 57px;}
+#tick3{left: 86px;}
+#tick4{left: 114px;}
+#tick5{left: 142px;}
+#tick6{left: 170px;}
+#tick7{left: 199px;}
+#tick8{left: 227px;}
+#tick9{left: 256px;}
+#tick10{left: 282px;}

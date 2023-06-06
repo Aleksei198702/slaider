@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 2</title>
+    <style>
+        /*Полоска слайдера*/
+        #slider {
+            width: 300px;
+            height: 20px;
+            position: relative;
+
+            border: 2px solid grey;
+            border-radius: 25px;
+            margin: 25px auto;
+            
+            background-color: #ddd;
+        }
+        
+        /*Тумблер слайдера*/
+        #thumb {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+
+            top: 0;
+            
+            border-radius: 50%;
+            color: white;
+            background-color: #333333bb;
+            
+            font-size: 10px;
+            line-height: 20px;
+            text-align: center;
+            user-select: none;
+        }
+
+        /*Контейнер со штрихами слайдера*/
+        #ticks {
+            position: relative;
+            left: 9px;
+            height: 10px;
+        }
+
+        /*Общие характеристики штриха слайдера*/
+        .tick {
+            position: absolute;
+            height: 6px;
+            width: 1px;
+            top: 23px;
+            background-color: black;
+        }
+
+        /*Значение штриха слайдера*/
+        .value{
+            position: absolute;
+            top: 7px;
+            left: -7px;
+            font-size: 15px;
+            user-select: none;
+        }
+
+        /*Сдвиг отметки цифр штрихов 0 и 100*/
+        #tick0 .value {left: -3px;}
+        #tick10 .value {left: -11px;}
+
+        /*Позиция штрихов*/
+        #tick0{left: 0; }
+        #tick1{left: 28px;}
+        #tick2{left: 57px;}
+        #tick3{left: 86px;}
+        #tick4{left: 114px;}
+        #tick5{left: 142px;}
+        #tick6{left: 170px;}
+        #tick7{left: 199px;}
+        #tick8{left: 227px;}
+        #tick9{left: 256px;}
+        #tick10{left: 282px;}
+    </style>
+</head>
+<body>
+    <div id="slider">
+        <div id="ticks">
+            <div id="tick0" class="tick"><div class="value">0</div></div>
+            <div id="tick1" class="tick"><div class="value">10</div></div>
+            <div id="tick2" class="tick"><div class="value">20</div></div>
+            <div id="tick3" class="tick"><div class="value">30</div></div>
+            <div id="tick4" class="tick"><div class="value">40</div></div>
+            <div id="tick5" class="tick"><div class="value">50</div></div>
+            <div id="tick6" class="tick"><div class="value">60</div></div>
+            <div id="tick7" class="tick"><div class="value">70</div></div>
+            <div id="tick8" class="tick"><div class="value">80</div></div>
+            <div id="tick9" class="tick"><div class="value">90</div></div>
+            <div id="tick10" class="tick"><div class="value">100</div></div>
+        </div>
+        <div id="thumb">0</div>
+    </div>
+
+    <script>
+        //Контейнер слайдера
+        var slider = document.getElementById("slider");
+        
+        //Кружок тумблера со значением
+        var thumbValue = document.getElementById("thumbValue");
+
+        //Область поверх тумблера, перекрывающая текст
+        var thumb = document.getElementById("thumb");
+        
+        //Добавить событие при клике на тумблер
+        //При движении мыши вызывать функцию moveThumb
+        //При отпускании клавиши мыши вызвать функцию releaseThumb
+        thumb.addEventListener("mousedown", function(event) {
+            document.addEventListener("mousemove", moveThumb);
+            document.addEventListener("mouseup", releaseThumb);
+        });
+
+        //Сдвинуть тумблер
+        function moveThumb(event) {
+            //Получить координаты левого края слайдера по оси X
+            var sliderLeftEdge = slider.getBoundingClientRect().left;
+
+            //Получить координаты правого края слайдера по оси X
+            var sliderRightEdge = slider.offsetWidth - thumb.offsetWidth;
+
+            //Значение отступа тумблера Слева 
+            //Задается как разница между позицией мыши и началом слайдера
+            //Например слайдер начинатся с X 50, а мышь находится на X 70
+            //Разница будет 20
+            var thumbLeft = event.pageX - sliderLeftEdge;
+
+            //Если отступ вышел за левый край слайдера, задать равным нулю  
+            if (thumbLeft < 0) {
+                thumbLeft = 0;
+            }
+
+            //Если отступ вышел за правый край слейдера, задать значение правого края слайдера
+            if (thumbLeft > sliderRightEdge) {
+                thumbLeft = sliderRightEdge;
+            }
+
+            //Определить длину одного шага слайдера
+            //Разделив длину слайдера на 10 шагов
+            var step = sliderRightEdge / 10;
+
+            //Определить значение тумблера, разделив отступ тумблера на длину шага слайдера
+            var value = Math.round(thumbLeft / step) * 10;
+            
+            //Задать значение отступа в соответствии с шагом слайдера
+            thumbLeft = (value / 100) * sliderRightEdge;
+
+            //Если значение тумблера равно 100, 
+            //то сдвинуть его на 3 пикселя влево для корректного отображения
+            if (value == 100){
+                thumb.style.left = thumbLeft-3 + "px";
+            }
+            else{
+                thumb.style.left = thumbLeft + "px";
+            }
+
+            //Отображение значения внутри кружка тумблера
+            thumb.innerHTML = value;
+        }
+
+        //Отпустить тумблер
+        function releaseThumb() {
+            //Удалить события со страницы, вызывающие функции тумблера
+            document.removeEventListener("mousemove", moveThumb);
+            document.removeEventListener("mouseup", releaseThumb);
+        }
+
+    </script>
+</body>
+</html>
